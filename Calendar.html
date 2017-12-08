@@ -1,0 +1,136 @@
+
+<!Doctype html>
+<html>
+<head>
+	<title>Calendar</title>
+	<style>
+		table th,table td{
+			padding: 5px;
+			border:1px blue solid;
+			text-align: center;
+		}
+	</style>
+	<script>
+	window.onload=function(){
+	/*	var date=new Date();
+		console.log(date);
+		console.log(date.getFullYear());
+		console.log(date.getMonth());
+		console.log(date.getDate());
+		console.log(date.getDay());
+		date.setDate(date.getDate()+1);
+		console.log(date);
+		date.setDate(33);
+		console.log(date);*/
+		///// Календар
+		function Calendar(id,year,month,header){
+			this.id=id;
+			var date = new Date();
+			this.year=year||date.getFullYear();
+			this.month=month-1||date.getMonth();
+			var mas = ["Mon","Tue","Wed","Th","Fr","Sat","Sun"];
+			this.header=header||mas;
+		}
+		Calendar.prototype.setYear=function(year){
+			this.year=year;
+		}
+		Calendar.prototype.setMonth=function(month){
+			this.month=month-1;
+		}
+		Calendar.prototype.create=function(){
+			var element=document.getElementById(this.id);
+			if(element==null)
+				return alert("Element dosn't exist!");
+			var table=document.createElement("table");
+			element.appendChild(table);
+			var tr=document.createElement("tr");
+			table.appendChild(tr);
+			for(var i=0;i<this.header.length;i++){
+				var th=document.createElement("th");
+				th.innerHTML=this.header[i];
+				tr.appendChild(th);
+			}
+			var date = new Date(this.year,this.month,1);
+			var count = date.getDay();
+			if(count==0)
+				count=7;
+			tr=document.createElement("tr");
+			table.appendChild(tr);
+			for(var i=0;i<count-1;i++){
+				var td=document.createElement("td");
+				tr.appendChild(td);
+			}
+			while(true){
+				if(date.getDay()==1){
+					tr=document.createElement("tr");
+					table.appendChild(tr);
+				}
+				var td = document.createElement("td");
+				td.innerHTML=date.getDate();
+				tr.appendChild(td);
+				date.setDate(date.getDate()+1);
+				if(date.getMonth()!==this.month)
+					break;
+
+			}
+			
+			var rowsCount = table.rows.length;
+			var countLast=table.rows[rowsCount-1].cells.length;
+			for(var i =countLast;i<7;i++){
+				var td=document.createElement("td");
+				tr.appendChild(td);
+			}
+			var tr1=table.querySelectorAll("table tr");
+			for(var i=0;i<tr1.length;i++){
+				if(tr1[i].innerHTML==""){
+					table.removeChild(tr1[i]);
+					rowsCount--;
+				}
+			}
+			for(var i=0;i<rowsCount;i++){
+
+				//if(table.rows[i].cells[5]) continue;
+				//console.log(table.rows[i].cells[5].innerHTML);
+				table.rows[i].cells[5].style.backgroundColor="red";
+				table.rows[i].cells[6].style.backgroundColor="red";
+			}
+
+		}
+		btnLoad.onclick=function(){
+			var year=yearEnter.value;
+			var month=select.value;
+			cal.setYear(year);
+			cal.setMonth(month);
+			cal.create();
+			var parent = document.getElementById(cal.id);
+			var table = document.querySelector("table");
+			parent.removeChild(table);
+		}
+		var cal = new Calendar("calendar");
+		cal.create();
+	}
+
+	</script>
+</head>
+<body>
+<div id="calendar">
+</div>
+<input id="yearEnter" type="text" placeholder="Enter year">
+<select id="select">
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option>5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	<option>9</option>
+	<option>10</option>
+	<option>11</option>
+	<option>12</option>
+</select>
+<input id="btnLoad" type="button" value="Load">
+</body>
+
+</html>
